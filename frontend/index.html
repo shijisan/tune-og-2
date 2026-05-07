@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+
+<body>
+    <!-- todo: make mobile frontend with react native expo (or just native for better notification media player controls) -->
+
+    <div style="display: flex; flex-direction: column; justify-content: center; margin: auto; width: fit-content;">
+        <p>Tune-og 2: (UI and Library Search stil WIP)</p>
+        <div style="display: flex;">
+            <input type="text" placeholder="Enter youtube url here" id="yt_url">
+            <button id="resolver_button">Resolve Url</button>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <audio style="margin-top: 16px;" id="m_player" controls autoplay></audio>
+            <button id="download_button" style="height: fit-content;">Download</button>
+        </div>
+    </div>
+
+    <script>
+
+        let resolver_button = document.getElementById("resolver_button");
+        let audio_element = document.getElementById("m_player");
+
+        resolver_button.addEventListener("click", () => {
+            let yt_url_value = document.getElementById("yt_url").value;
+            let encoded_url = encodeURIComponent(yt_url_value);
+
+            audio_element.setAttribute("src", `http://localhost:8000/stream?url=${encoded_url}`);
+            console.log("url:", yt_url_value);
+        });
+
+        let download_button = document.getElementById("download_button")
+        download_button.addEventListener("click", async () => {
+            console.log("downloading...");
+            let yt_url_value = document.getElementById("yt_url").value;
+            let encoded_url = encodeURIComponent(yt_url_value);
+
+            window.location.href = `http://localhost:8000/download?url=${encoded_url}`;
+        });
+        
+
+    </script>
+</body>
+
+</html>
