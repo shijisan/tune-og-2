@@ -22,7 +22,30 @@
         </div>
     </div>
 
+    <hr style="margin: 32px 0;" />
+
+    <div style="display: flex; flex-direction: column; gap: 12px; width: 500px; margin: auto;">
+        <p>YouTube Music Search</p>
+
+        <div style="display: flex; gap: 8px;">
+            <input
+                type="text"
+                placeholder="Search songs..."
+                id="search_query"
+                style="flex: 1;"
+            />
+
+            <button id="search_button">
+                Search
+            </button>
+        </div>
+
+        <div id="search_results"></div>
+    </div>
+
     <script>
+
+        // url to audio stream
 
         let resolver_button = document.getElementById("resolver_button");
         let audio_element = document.getElementById("m_player");
@@ -43,7 +66,39 @@
 
             window.location.href = `http://localhost:8000/download?url=${encoded_url}`;
         });
-        
+
+
+        // string query to metadata
+
+        let search_button = document.getElementById("search_button");
+        let search_results = document.getElementById("search_results");
+
+        search_button.addEventListener("click", async () => {
+            const query = document.getElementById("search_query").value;
+
+            if (!query) return;
+
+            try {
+                const response = await fetch(
+                    `http://localhost:3000/search?q=${encodeURIComponent(query)}`
+                );
+
+                const data = await response.json();
+
+                console.log(data);
+
+                search_results.innerHTML = `
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (err) {
+                console.error(err);
+
+                search_results.innerHTML = `
+                    <p style="color:red;">Search failed.</p>
+                `;
+            }
+        });
+                
 
     </script>
 </body>

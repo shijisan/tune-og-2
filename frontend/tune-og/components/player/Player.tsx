@@ -2,7 +2,7 @@ import { Pressable, View, Dimensions } from "react-native"
 import { Image } from "expo-image"
 import { Text } from "../ui/text"
 import { ControlButton, ControlType } from "./ControlButton"
-import { ChevronUp } from "lucide-react-native"
+import { Minus } from "lucide-react-native"
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -14,16 +14,20 @@ import Animated, {
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import { useState } from "react"
 import { runOnJS } from "react-native-worklets"
-import { cssInterop } from "nativewind"
+import { cssInterop, useColorScheme } from "nativewind"
+import { Icon } from "../ui/icon"
 
 cssInterop(Image, { className: "style" })
 
 const { height } = Dimensions.get("window")
 
 const SNAP_TOP = 0;
-const SNAP_BOTTOM = height * 0.785;
+const SNAP_BOTTOM = height * 0.715;
+
 
 export default function Player() {
+  const { colorScheme } = useColorScheme();
+
   // Start collapsed
   const translateY = useSharedValue(SNAP_BOTTOM)
   const offset = useSharedValue(SNAP_BOTTOM)
@@ -77,14 +81,14 @@ export default function Player() {
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderWidth: 1,
-            borderColor: "white"
+            borderColor: colorScheme === 'dark' ? "#FFFFFF80" : "#80000000",
           },
           animatedStyle,
         ]}
       >
         <View className="flex items-center justify-center w-full py-2">
           <Pressable>
-            <ChevronUp size={24} />
+            <Icon className="opacity-70" as={Minus} size={24} />
           </Pressable>
         </View>
 

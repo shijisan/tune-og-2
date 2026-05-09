@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse, FileResponse
-from src.core.orchestrators.audio_pipeline_orchestrator import AudioPipelineOrchestrator
-from src.services.ytdlp_service import YtdlpService
-from src.services.ffmpeg_service import FfmpegService
+from core.orchestrators.audio_pipeline_orchestrator import AudioPipelineOrchestrator
+from services.ytdlp_service import YtdlpService
+from services.ffmpeg_service import FfmpegService
 import asyncio
 
 app = FastAPI()

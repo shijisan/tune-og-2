@@ -5,16 +5,22 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import Player from '@/components/player/Player';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const theme = colorScheme === 'dark' ? 'dark' : 'light';  
 
   return (
+    <>
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[theme].tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          zIndex: 50,
+        }
       }}>
       <Tabs.Screen
         name="index"
@@ -31,5 +37,8 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    <Player />
+  
+    </>
   );
 }

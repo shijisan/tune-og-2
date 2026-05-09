@@ -1,5 +1,5 @@
-from src.services.ytdlp_service import YtdlpService
-from src.services.ffmpeg_service import FfmpegService
+from services.ytdlp_service import YtdlpService
+from services.ffmpeg_service import FfmpegService
 
 class AudioPipelineOrchestrator:
     

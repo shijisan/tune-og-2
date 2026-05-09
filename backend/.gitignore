@@ -1,25 +1,76 @@
-# virtual environment
+# ───────────────────────────────────────────────────
+# NODE.JS / TYPESCRIPT
+# ───────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.cjs
+.pnp.loader.mjs
+.eslintcache
+.prettierignore
+
+# Build / Dist
+dist/
+build/
+out/
+coverage/
+.nyc_output/
+*.js
+*.js.map
+*.d.ts
+*.tsbuildinfo
+
+# ───────────────────────────────────────────────────
+# PYTHON (your existing rules)
+# ───────────────────────────────────────────────────
 venv/
 env/
 .venv/
-
-# env files
 .env
-
-# python cache
+!.env.example
 __pycache__/
 *.pyc
 *.pyo
-
-# pytest
+*.pyd
+.Python
+*.log
 .pytest_cache/
 
-# logs
-*.log
+# ───────────────────────────────────────────────────
+# ENV & SECRETS (both ecosystems)
+# ───────────────────────────────────────────────────
+.env*.local
+.env*.prod
+*.pem
+*.key
+*.crt
+secrets.json
+config.local.*
 
-# IDE
-.vscode/
+# ───────────────────────────────────────────────────
+# IDE / EDITOR
+# ───────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
 .idea/
+*.swp
+*.swo
+*~
 
+# ───────────────────────────────────────────────────
 # OS
+# ───────────────────────────────────────────────────
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# ───────────────────────────────────────────────────
+# OPTIONAL: Fastify / API specific
+# ───────────────────────────────────────────────────
+logs/
+tmp/
+*.pid
+*.seed
