@@ -6,10 +6,11 @@ class FfmpegService:
     
     def __init__(self) -> None:
         self.default_bitrate = '128k'
-        self.default_format = 'm4a'
+        self.default_format = 'mp3'
 
     def _get_temp_path(self):
-        tmp = tempfile.NamedTemporaryFile(suffix = '.m4a', delete = False)
+        tmp = tempfile.NamedTemporaryFile(suffix = '.mp3', delete = False)
+        tmp.close()
         return tmp.name
 
     def normalize_audio(self, input_path: str):
@@ -19,7 +20,7 @@ class FfmpegService:
             'ffmpeg',
             '-y',
             '-i', input_path,
-            '-c:a', 'aac',
+            '-c:a', 'libmp3lame',
             '-b:a', '128k',
             output_path
         ], check = True)

@@ -1,3 +1,5 @@
+import Player from '@/components/player/Player';
+import { PlayerProvider } from '@/context/playerContext';
 import '@/global.css';
 
 import { NAV_THEME } from '@/lib/theme';
@@ -16,15 +18,17 @@ export default function RootLayout() {
   const { colorScheme } = useColorScheme();
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-        {/* <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} /> */}
+    <PlayerProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ThemeProvider value={NAV_THEME[colorScheme ?? 'dark']}>
+          {/* <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} /> */}
 
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-        {/* <PortalHost /> */}
-      </ThemeProvider>
-    </GestureHandlerRootView>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+          {/* <Player /> */}
+        </ThemeProvider>
+      </GestureHandlerRootView>
+    </PlayerProvider>
   );
 }

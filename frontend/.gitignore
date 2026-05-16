@@ -1,0 +1,86 @@
+# ─────────────────────────────
+# DEPENDENCIES
+# ─────────────────────────────
+node_modules/
+
+# ─────────────────────────────
+# EXPO
+# ─────────────────────────────
+.expo/
+.expo-shared/
+.expo-dev-client/
+web-build/
+
+# ─────────────────────────────
+# BUILD OUTPUTS
+# ─────────────────────────────
+dist/
+build/
+
+# Android / iOS native builds (IMPORTANT: only ignore build outputs, NOT folders)
+android/app/build/
+android/.gradle/
+ios/build/
+ios/Pods/
+
+# ─────────────────────────────
+# ENV FILES
+# ─────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─────────────────────────────
+# LOGS
+# ─────────────────────────────
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# ─────────────────────────────
+# CACHE
+# ─────────────────────────────
+.expo/
+metro-cache/
+.watchmanconfig
+
+# ─────────────────────────────
+# TYPESCRIPT
+# ─────────────────────────────
+*.tsbuildinfo
+
+# ─────────────────────────────
+# TEST / COVERAGE
+# ─────────────────────────────
+coverage/
+.nyc_output/
+.pytest_cache/
+
+# ─────────────────────────────
+# IDE
+# ─────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+.idea/
+
+# ─────────────────────────────
+# OS
+# ─────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─────────────────────────────
+# TEMP FILES
+# ─────────────────────────────
+*.swp
+*.swo
+*~
+
+frontend/tune-og/android/app/build/
+frontend/tune-og/android/.gradle/

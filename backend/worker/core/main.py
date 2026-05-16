@@ -22,17 +22,26 @@ async def stream(url: str):
     temp_normalized_output_path = orchestrator.get_temp_stream_output_path(url)
 
     # iterate over chunks of the url connection
-    def iter_audio():
-        print("iterating temp file chunks")
-        with open(temp_normalized_output_path, "rb") as f:
-            while chunk := f.read(1024 * 32):
-                yield chunk
+    # def iter_audio():
+    #     print("iterating temp file chunks")
+    #     with open(temp_normalized_output_path, "rb") as f:
+    #         while chunk := f.read(1024 * 32):
+    #             yield chunk
 
-    print("returning audio bytes")
-    return StreamingResponse(
-        iter_audio(),
-        media_type="audio/mpeg"
-    )
+    # print("returning audio bytes")
+    # return StreamingResponse(
+    #     iter_audio(),
+    #     media_type="audio/mpeg"
+    # )
+
+    return FileResponse(
+        temp_normalized_output_path, 
+        media_type="audio/mp4", 
+        headers={
+            "Accept-Ranges": "bytes",
+            "Content-Disposition": "inline",
+        }
+    );
 
 @app.get("/download")
 async def download(url: str):

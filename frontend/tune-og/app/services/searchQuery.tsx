@@ -1,12 +1,12 @@
 // todo: use tanstack query
 
-export async function fetchSearchResults(searchTerm: string) {
+export default async function fetchSearchResults(searchTerm: string) {
 
-    const params = new URLSearchParams({ searchTerm });
+    const params = new URLSearchParams({ q: searchTerm });
 
     try {
         const res = await fetch(
-            `${process.env.EXPO_PUBLIC_API_URL}/search/${params.toString()}`
+            `${process.env.EXPO_PUBLIC_API_URL}/search?${params.toString()}`
         );
 
         if (!res.ok) {

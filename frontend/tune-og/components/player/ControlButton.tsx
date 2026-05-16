@@ -14,7 +14,12 @@ export enum ControlType {
   Next,
 }
 
-export function ControlButton({ type }: { type: ControlType }) {
+type ControlButtonProps = {
+  type: ControlType;
+  props?: any,
+}
+
+export function ControlButton({type, props} : ControlButtonProps) {
   const getIcon = () => {
     switch (type) {
       case ControlType.Prev:
@@ -31,7 +36,7 @@ export function ControlButton({ type }: { type: ControlType }) {
   const IconComponent = getIcon()
 
   return (
-    <Button variant="outline" size="icon">
+    <Button variant="outline" size="icon" {...props}>
       <Icon as={IconComponent} />
     </Button>
   )

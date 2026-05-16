@@ -21,10 +21,16 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff",
-        "usesCleartextTraffic": true,
-        "blockedPermissions": []
-      }
+        "backgroundColor": "#ffffff"
+      },
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ],
+      "package": "com.shijisan.tuneog"
     },
     "web": {
       "bundler": "metro",
@@ -34,15 +40,24 @@
     "plugins": [
       "expo-router",
       "expo-web-browser",
-      "expo-audio",
-      {
-        "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone.",
-        "enableBackgroundPlayback": true,
-        "enableBackgroundRecording": false
-      }
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone.",
+          "enableBackgroundPlayback": true,
+          "enableBackgroundRecording": false
+        }
+      ],
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f4ccec6f-f895-494e-8633-35e455e85151"
+      }
     }
   }
 }
