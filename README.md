@@ -47,7 +47,7 @@ npx expo start -c
 
 ## Frontend (Optional - Basic HTML Testing)
 
-For quick/early alpha testing using the plain HTML files, navigate to the frontend directory and run:
+For quick/early alpha testing using the plain HTML files, navigate to the frontend directory and run (might be outdated):
 
 ```
 cd frontend
