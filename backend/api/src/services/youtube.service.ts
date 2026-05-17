@@ -1,6 +1,5 @@
 import { Innertube, UniversalCache } from 'youtubei.js';
 import { getInnertube } from '../utils/innertube';
-// import fs from "fs";
 
 interface MusicSearchResult {
     id: string;
@@ -17,21 +16,13 @@ export class Youtube {
         cache: new UniversalCache(false),
     };
 
-    // for debugging output of firstResult
-    // logToFile(data: any) {
-    //     fs.appendFileSync(
-    //         "logs.txt",
-    //         `[${new Date().toISOString()}] ${JSON.stringify(data, null, 2)}\n\n`
-    //     );
-    // }
-
     private innertube: Promise<Innertube>;
 
     constructor() {
         this.innertube = getInnertube(this.DEFAULT_CONFIG);
     }
 
-    async search(query: string) {
+    async search(query: string, hasQueue: boolean = false) {
         const innertube = await this.innertube;
 
         const [songSearch, videoSearch] = await Promise.all([
@@ -45,28 +36,18 @@ export class Youtube {
         const topResults = [...songResults, ...videoResults].slice(0, 10);
 
         const metadataList = await Promise.all(
-            topResults.map(result => this._getMetadata(result.id))
+            topResults.map(result => this._getMetadata(result.id, hasQueue))
         );
 
         return metadataList
     }
 
-    async _getMetadata(videoId: string) {
+    async _getMetadata(videoId: string, hasQueue: boolean = false) {
         const innertube = await this.innertube;
 
         const info = await innertube.music.getInfo(videoId);
 
-        // dont need to get the stream url as ytdlp worker does that
-        // const formats = [
-        //     ...(info.streaming_data?.formats ?? []),
-        //     ...(info.streaming_data?.adaptive_formats ?? []),
-        // ];
-
-        // const bestAudio = formats
-        //     .filter((f: any) => f.mime_type?.includes('audio'))
-        //     .sort((a: any, b: any) => (b.bitrate ?? 0) - (a.bitrate ?? 0))[0];
-        // const finalUrl = bestAudio?.url ?? await bestAudio?.decipher(innertube.session.player) ?? null;
-
+        const upComingList = hasQueue ? (await info.getUpNext()).contents : []; // todo: improve performance of this, adds around 3 secs per req (only an issue on initial track select)
 
         return {
             id: info.basic_info?.id,
@@ -75,6 +56,7 @@ export class Youtube {
             duration: info.basic_info?.duration,
             thumbnail: (info.basic_info?.thumbnail as any)?.[0]?.url ?? null,
             finalUrl: `https://youtube.com/watch?v=${info.basic_info.id}`,
+            upComing: upComingList,
         };
     }
 

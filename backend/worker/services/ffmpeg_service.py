@@ -38,4 +38,23 @@ class FfmpegService:
 
         return job_id, output_path
 
+    # todo: track user/session for job cancel/cleanup
+    def cancel_job(self, job_id: str):
+        job = self.processes.get(job_id)
+        if not job:
+            return
+        
+        process = job["process"]
+        if process.poll() is None: 
+            process.kill()
+        
+        # clean up temp file
+        import os
+        try:
+            os.unlink(job["output"])
+        except FileNotFoundError:
+            pass
+        
+        del self.processes[job_id]
+
     # todo: make func to poll job status

@@ -6,10 +6,13 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import Player from '@/components/player/Player';
+import { usePlayerStore } from '@/store/playerStore';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === 'dark' ? 'dark' : 'light';  
+  const currentTrack = usePlayerStore((state) => state.currentTrack);
+
 
   return (
     <>
@@ -31,7 +34,9 @@ export default function TabLayout() {
       />
     </Tabs>
 
-    <Player />
+    {currentTrack && (
+      <Player />
+    )}
   
     </>
   );

@@ -19,6 +19,8 @@ async function start() {
 
     fastify.get('/search', searchRoute);
 
+    // todo: track session to bind to job for cancelling/cleaning
+
     try {
         await fastify.listen({ port: 3000, host: '0.0.0.0' });
     } catch (err) {

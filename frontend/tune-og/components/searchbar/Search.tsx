@@ -6,6 +6,8 @@ import { Text } from "../ui/text";
 import { usePlayerStore } from "@/store/playerStore";
 import { ScrollView } from "react-native-gesture-handler";
 
+
+// todo: make explicit types/interfaces
 type SearchResult = {
     id: string;
     title: string;
@@ -13,6 +15,7 @@ type SearchResult = {
     thumbnail?: string;
     duration?: number;
     finalUrl: string;
+    upComing: any[];
 };
 
 export default function Search() {
@@ -33,7 +36,8 @@ export default function Search() {
         }
 
         debounceRef.current = setTimeout(async () => {
-            const res = await fetchSearchResults(searchInput);
+            const hasQueue = (usePlayerStore.getState().currentTrack?.upComing?.length ?? 0) > 0;
+            const res = await fetchSearchResults(searchInput, hasQueue);
             setResults(res?.data?.metadata ?? []);
         }, 1000);
     }
@@ -46,12 +50,10 @@ export default function Search() {
             thumbnail: track.thumbnail ?? "",
             finalUrl: track.finalUrl,
             duration: track.duration ?? 0,
-            currTime: 0
+            currTime: 0,
+            upComing: track.upComing,
         });
     }
-
-
-    // todo: make hook for handling streaming
 
     return (
         <SafeAreaView className="px-4">

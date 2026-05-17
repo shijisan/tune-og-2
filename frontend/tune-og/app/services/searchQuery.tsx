@@ -1,8 +1,10 @@
 // todo: use tanstack query
 
-export default async function fetchSearchResults(searchTerm: string) {
+// if playerStore.state.upComing.length === 0, set 2nd parameter of fetchSearchResults (hasQueue) to true
 
-    const params = new URLSearchParams({ q: searchTerm });
+export default async function fetchSearchResults(searchTerm: string, hasQueue: boolean = false) {
+
+    const params = new URLSearchParams({ query: searchTerm, hasQueue: String(hasQueue) });
 
     try {
         const res = await fetch(

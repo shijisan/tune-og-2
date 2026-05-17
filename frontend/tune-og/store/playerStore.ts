@@ -8,6 +8,7 @@ interface PlayerMetadata {
   currTime: number;
   duration: number;
   finalUrl: string;
+  upComing: any[];
 };
 
 interface PlayerStore {
@@ -17,5 +18,10 @@ interface PlayerStore {
 
 export const usePlayerStore = create<PlayerStore>((set) => ({
   currentTrack: null,
-  setCurrentTrack: (track) => set({ currentTrack: track }),
+  setCurrentTrack: (track) => set((state) => ({
+    currentTrack: {
+      ...track,
+      upComing: track.upComing?.length ? track.upComing : state.currentTrack?.upComing ?? [],
+    }
+  })),
 }));
