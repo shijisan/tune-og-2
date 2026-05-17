@@ -67,7 +67,7 @@ export default function Search() {
                     <Pressable
                         key={result.id ?? index}
                         className="flex flex-row gap-4 py-2 active:bg-muted"
-                        onPress={() => handleSelectTrack(result)}
+                        onPress={() => {handleSelectTrack(result);}}
                     >
                         <Image source={{ uri: result.thumbnail }} height={70} width={70} />
 
