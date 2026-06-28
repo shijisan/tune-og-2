@@ -1,10 +1,11 @@
 import { Image, Pressable, TextInput, View } from "react-native";
-import fetchSearchResults from "../../app/services/searchQuery";
+import fetchSearchResults from "@/services/searchQuery";
 import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "../ui/text";
 import { usePlayerStore } from "@/store/playerStore";
 import { ScrollView } from "react-native-gesture-handler";
+import { useSQLiteContext } from "expo-sqlite";
 
 
 // todo: make explicit types/interfaces
@@ -26,6 +27,7 @@ export default function Search() {
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
     const setCurrentTrack = usePlayerStore((state) => state.setCurrentTrack);
+    const db = useSQLiteContext();
 
 
     function handleSearch(searchInput: string) {
@@ -37,8 +39,9 @@ export default function Search() {
 
         debounceRef.current = setTimeout(async () => {
             const hasQueue = (usePlayerStore.getState().currentTrack?.upComing?.length ?? 0) > 0;
-            const res = await fetchSearchResults(searchInput, hasQueue);
-            setResults(res?.data?.metadata ?? []);
+            const res = await fetchSearchResults(db, searchInput, hasQueue);
+            console.log("results to frontend:", res);
+            setResults(res?.data?.metadata ?? res ?? []);
         }, 1000);
     }
 

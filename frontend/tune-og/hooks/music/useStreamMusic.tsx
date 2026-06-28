@@ -3,20 +3,29 @@ import {
 	useAudioPlayer,
 	useAudioPlayerStatus,
 } from "expo-audio";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePlayerStore } from "@/store/playerStore";
+import { useSettings } from "../use-settings";
+import { Settings } from "@/database/repository/settings";
 
 export function useStreamMusic() {
+
+	// HOOKS
 	const player = useAudioPlayer({ uri: "" });
 	const status = useAudioPlayerStatus(player);
 	const { currentTrack, setCurrentTrack } = usePlayerStore();
+	const { settings } = useSettings();
 
+
+	// VARS
 	const lastTrackRef = useRef<string | null>(null);
 	const playerRef = useRef(player);
 	const pendingTrackRef = useRef<string | null>(null);
-
 	const isAdvancingRef = useRef(false);
+	const audioSource = settings?.audio_source;
 
+
+	// MOUNTING
 	// listen to player init to create copy of current instance
 	useEffect(() => {
 		playerRef.current = player;
@@ -80,28 +89,41 @@ export function useStreamMusic() {
 	}, [status.didJustFinish, setCurrentTrack, currentTrack]);
 
 
-
 	const handlePlayStream = useCallback(async (sourceUrl: string) => {
-		const workerUrl = process.env.EXPO_PUBLIC_WORKER_URL;
-		if (!workerUrl) return;
-		// console.log('handlePlayStream called:', sourceUrl, 'lastTrack:', lastTrackRef.current);
+		let audioUrl = sourceUrl;
+		const isSameTrack = lastTrackRef.current === sourceUrl;
+		
+		if (audioSource === "local") {
+			playerRef.current?.replace({ uri: audioUrl });
+			playerRef.current?.play();
+			
+		} else {
+			const workerUrl = process.env.EXPO_PUBLIC_WORKER_URL;
+			if (!workerUrl) return;
+			// console.log('handlePlayStream called:', sourceUrl, 'lastTrack:', lastTrackRef.current);
 
-		if (lastTrackRef.current === sourceUrl) {
-			// console.log('blocked, same track');
-			return;
-		} 
+			if (isSameTrack) {
+				// console.log('blocked, same track');
+				return;
+			}
 
-		lastTrackRef.current = sourceUrl;
-		pendingTrackRef.current = null;
+			lastTrackRef.current = sourceUrl;
+			pendingTrackRef.current = null;
 
-		const streamEndpoint = `${workerUrl}/stream?url=${encodeURIComponent(sourceUrl)}`;
+			const streamEndpoint = `${workerUrl}/stream?url=${encodeURIComponent(sourceUrl)}`;
+
+			try {
+				const res = await fetch(streamEndpoint);
+				const streamJson = await res.json();
+				if (!res.ok || streamJson.error) throw new Error(streamJson.error ?? "Failed to start stream job");
+
+				audioUrl = `${workerUrl}${streamJson.url}`;
+			} catch (err) {
+				throw err;
+			}
+		}
 
 		try {
-			const res = await fetch(streamEndpoint);
-			const streamJson = await res.json();
-			if (!res.ok || streamJson.error) throw new Error(streamJson.error ?? "Failed to start stream job");
-
-			const audioUrl = `${workerUrl}${streamJson.url}`;
 			playerRef.current?.replace({ uri: audioUrl });
 			playerRef.current?.play();
 		} catch (err) {
@@ -184,9 +206,9 @@ export function useStreamMusic() {
 	}, [currentTrack, setCurrentTrack]);
 
 	const handlePlayPrev = useCallback(() => {
-			// todo: make track history to support prev track
-			playerRef.current?.seekTo(0);
-			return;
+		// todo: make track history to support prev track
+		playerRef.current?.seekTo(0);
+		return;
 	}, [status.currentTime]);
 
 
