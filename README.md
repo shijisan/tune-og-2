@@ -1,6 +1,7 @@
 ## Tune-OG
 
 ytdlp as core, ffmpeg for normalizer, youtube.js as library search, react native expo for front. backend will be hosted privately and I only plan to let people I know use this.
+UPDATE: currently trying to implement a local-only version without needing a server.
 
 # Getting Started
 
@@ -55,3 +56,13 @@ python -m http.server 5500
 ```
 
 Note: This is for quick testing purposes only and may include unfinished or experimental features.
+
+
+## alpha-sigDec-Approach Branch
+
+Incomplete as I am blocked by the necessity of a custom JS interpreter.
+To use run this command first:
+
+```
+npm run build:webview
+```
