@@ -7,6 +7,12 @@ type PendingRequest = {
   reject: (reason?: any) => void;
 };
 
+export type BridgeResponse = {
+  id: string;
+  type: string;
+  payload: any;
+}
+
 const pending = new Map<string, PendingRequest>();
 
 let nextId = 0;
@@ -35,27 +41,20 @@ export function onMessage(event: any) {
   request.resolve(message.payload);
 }
 
-export function send(type: string, payload: any) {
+export function send<T = any>(type: string, payload: any): Promise<T> {
   const currentWebView = webview;
 
   if (!currentWebView) {
     return Promise.reject(new Error("WebView not ready"));
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise<T>((resolve, reject) => {
     const id = String(++nextId);
 
-    pending.set(id, {
-      resolve,
-      reject,
-    });
+    pending.set(id, { resolve, reject });
 
     currentWebView.postMessage(
-      JSON.stringify({
-        id,
-        type,
-        payload,
-      })
+      JSON.stringify({ id, type, payload })
     );
   });
 }
