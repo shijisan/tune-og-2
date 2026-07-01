@@ -20,13 +20,10 @@ export class Youtube {
     }
 
     private async createInnerTube() {
-        const { UniversalCache } = await import("youtubei.js");
-
         return getInnertube({
-            user_agent:
-                "Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+            user_agent: "Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
             client_type: "ANDROID",
-            cache: new UniversalCache(false), // issue: can't set value in `getInnerTube` function itself
+            cache: undefined, // issue: can't set value in `getInnerTube` function itself
         });
     }
 

@@ -7,6 +7,8 @@ module.exports = function (api) {
     ],
     plugins: [
       "react-native-reanimated/plugin",
+      ['@babel/plugin-syntax-import-attributes', {deprecatedAssertSyntax: true}],
+      '@babel/plugin-transform-export-namespace-from',
     ],
   };
 };
