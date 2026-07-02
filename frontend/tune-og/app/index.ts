@@ -16,6 +16,9 @@ if (!global.atob) {
   global.atob = decode;
 }
 
+// import {MMKV} from 'react-native-mmkv';
+// global.mmkvStorage = MMKV as any;
+
 // See https://github.com/nodejs/node/issues/40678#issuecomment-1126944677
 class CustomEvent extends Event {
   #detail;

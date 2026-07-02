@@ -40,7 +40,7 @@ export default function Search() {
         debounceRef.current = setTimeout(async () => {
             const hasQueue = (usePlayerStore.getState().currentTrack?.upComing?.length ?? 0) > 0;
             const res = await fetchSearchResults(db, searchInput, hasQueue);
-            console.log("results to frontend:", res);
+            // console.log("results to frontend:", res);
             setResults(res?.data?.metadata ?? res ?? []);
         }, 1000);
     }

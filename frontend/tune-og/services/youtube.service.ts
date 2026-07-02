@@ -22,7 +22,7 @@ export class Youtube {
     private async createInnerTube() {
         return getInnertube({
             user_agent: "Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
-            client_type: "ANDROID",
+            client_type: "WEB_REMIX",
             cache: undefined, // issue: can't set value in `getInnerTube` function itself
         });
     }
@@ -53,10 +53,14 @@ export class Youtube {
 
         const info = await innertube.music.getInfo(videoId);
 
-        const upComingList = hasQueue ? (await info.getUpNext()).contents : []; // todo: improve performance of this, adds around 3 secs per req (only an issue on initial track select)
+        // const upComingList = hasQueue ? (await info.getUpNext()).contents : []; // todo: improve performance of this, adds around 3 secs per req (only an issue on initial track select)
+
+        const upComingList: any[] = [];
 
         const streamingObj = await info.chooseFormat({type: 'audio', quality: 'best'});
-        const streamingUrl = streamingObj?.decipher(innertube.session.player); // TODO: move deciphering logic to webview (breaks because of react native browser <hermes>)
+        const streamingUrl = await streamingObj?.decipher(innertube.session.player);
+        console.log("streamingUrl type:", typeof streamingUrl);
+        console.log("streamingUrl:", streamingUrl);
         const finalUrl = settings?.audio_source === "local" ? streamingUrl : `https://youtube.com/watch?v=${info.basic_info.id}`;
         
 
