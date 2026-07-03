@@ -28,7 +28,7 @@ export async function processMessage(type: string, payload: any) {
                 throw new Error("No signature cipher found");
             }
 
-            const streamUrl = await decipher(cipher);
+            const streamUrl = await format.decipher(yt.session.player);
 
             return {
                 id: info.basic_info?.id,
